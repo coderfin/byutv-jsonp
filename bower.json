@@ -15,7 +15,7 @@
 	],
 	"main": "byutv-jsonp.html",
 	"license": "MIT",
-	"homepage": "https://github.com/coderfin/byutv-jsonp/",
+	"homepage": "http://coderfin.github.io/byutv-jsonp/components/byutv-jsonp/",
 	"ignore": [
 		"/.*",
 		"/tests/"
