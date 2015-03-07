@@ -14,7 +14,3 @@ See the [documentation page](http://coderfin.github.io/byutv-jsonp/components/by
 ## Demo
 
 See the [demo page](http://coderfin.github.io/byutv-jsonp/components/byutv-jsonp/demo.html).
-
-## Tests
-
-See the [tests page](http://coderfin.github.io/byutv-jsonp/components/byutv-jsonp/test/).
