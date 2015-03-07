@@ -1,0 +1,29 @@
+{
+	"name": "byutv-jsonp",
+	"version": "1.0.0",
+	"authors": [
+		"Ron Peterson"
+	],
+	"description": "The `byutv-jsonp` element exposes `jsonp` functionality.",
+	"keywords": [
+		"web-component",
+		"web-components",
+		"polymer",
+		"byutv-jsonp",
+		"byutv",
+		"jsonp"
+	],
+	"main": "byutv-jsonp.html",
+	"license": "MIT",
+	"homepage": "https://github.com/coderfin/byutv-jsonp/",
+	"ignore": [
+		"/.*",
+		"/tests/"
+	],
+	"dependencies": {
+		"polymer": "Polymer/polymer#^0.5.5"
+	},
+	"devDependencies": {
+		"web-component-tester": "*"
+	}
+}
