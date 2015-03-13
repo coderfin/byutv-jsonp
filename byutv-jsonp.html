@@ -9,7 +9,7 @@ Authors:
 -->
 
 <!--
-The `byutv-jsonp` element exposes `jsonp` functionality.
+A Polymer element that facilitates making JSONP request.  Patterned after Polymer's `core-ajax` element and tested using unit tests.
 
 Example:
 
@@ -27,13 +27,13 @@ Note: The `params` attribute must be a double quoted JSON string.
 You can trigger a request explicitly by calling `go` on the element.
 
 @element byutv-jsonp
-@homepage http://coderfin.github.io/byutv-jsonp/components/byutv-jsonp/
-@demo http://coderfin.github.io/byutv-jsonp/components/byutv-jsonp/demo.html/
+@demo http://coderfin.github.io/byutv-jsonp/components/byutv-jsonp/demo.html
+@homepage https://github.com/coderfin/byutv-jsonp
 -->
 <link href="../polymer/polymer.html" rel="import" />
 <polymer-element name="byutv-jsonp" attributes="auto cache callbackname callbackparam error loading params response url">
 	<script>
-		Polymer("byutv-jsonp", {
+		Polymer({
 			/**
 			 * Fired whenever a response or an error is received.
 			 *
@@ -258,8 +258,8 @@ You can trigger a request explicitly by calling `go` on the element.
 				}
 
 				if (complete) {
-					this.processComplete();
 					this.cleanup();
+					this.processComplete();
 				}
 			},
 

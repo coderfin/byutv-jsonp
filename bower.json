@@ -1,10 +1,10 @@
 {
 	"name": "byutv-jsonp",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"authors": [
 		"Ron Peterson"
 	],
-	"description": "The `byutv-jsonp` element exposes `jsonp` functionality.",
+	"description": "A Polymer element that facilitates making JSONP request.  Patterned after Polymer's `core-ajax` element and tested using unit tests.",
 	"keywords": [
 		"web-component",
 		"web-components",
