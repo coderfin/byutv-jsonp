@@ -1,4 +1,5 @@
-﻿<!--
+﻿<!doctype html>
+<!--
 @license
 Copyright (c) 2015 BYU Broadcasting. All rights reserved.
 This code is licensed under the MIT style license found as part of this project.
@@ -7,163 +8,17 @@ Authors:
 
 	Ron Peterson
 -->
-<!doctype html>
 <html>
 <head>
-	<title>byutv-jsonp Tests</title>
-	<meta charset="UTF-8">
+	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-	<script src="../../webcomponentsjs/webcomponents.min.js"></script>
+	<title>byutv-jsonp Tests</title>
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
 	<script src="../../web-component-tester/browser.js"></script>
 	<link rel="import" href="../byutv-jsonp.html">
 </head>
 <body>
-	<byutv-jsonp auto
-				 callbackparam="callback"
-				 callbackname="byutv_jsonp_callback"
-				 loading
-				 url="http://jsonplaceholder.typicode.com/posts"
-				 params='{"userId":"1"}'></byutv-jsonp>
-
-	<script>
-		var element = document.querySelector("byutv-jsonp");
-
-		suite("<byutv-jsonp>", function () {
-			test('defines the "auto" attribute', function () {
-				assert.isTrue(element.auto);
-			});
-
-			test('the "cache" attribute is not defined', function () {
-				assert.isFalse(element.cache);
-			});
-
-			test('defines the "callbackname" attribute', function () {
-				assert.equal(element.callbackname, "byutv_jsonp_callback");
-			});
-
-			test('defines the "callbackparam" attribute', function () {
-				assert.equal(element.callbackparam, "callback");
-			});
-
-			test('the "error" value is null', function () {
-				assert.equal(element.error, null);
-			});
-
-			test('defines the "loading" attribute', function () {
-				assert.isTrue(element.loading);
-			});
-
-			test('the "response" attribute is null', function () {
-				assert.equal(element.response, null);
-			});
-
-			test('defines the "url" attribute', function () {
-				assert.equal(element.url, "http://jsonplaceholder.typicode.com/posts");
-			});
-
-			test('defines the "params" attribute', function () {
-				assert.include(element.params, { userId: "1" });
-			});
-
-			test("fires complete", function (done) {
-				var listener = function (event) {
-					assert.equal(typeof event, "object");
-					element.removeEventListener("complete", listener);
-					done();
-				};
-
-				element.addEventListener("complete", listener);
-
-				element.go();
-			});
-
-			test("fires error", function (done) {
-				var url = element.url;
-
-				var errorListener = function (event) {
-					element.url = url;
-					assert.equal(typeof element.error, "object");
-					element.removeEventListener("error", errorListener);
-					element.removeEventListener("response", responseListener);
-					done();
-				};
-
-				// This event should never be called, hence assert.equal(true, false).
-				var responseListener = function (event) {
-					element.url = url;
-					assert.equal(true, false);
-					element.removeEventListener("error", errorListener);
-					element.removeEventListener("response", responseListener);
-					done();
-				};
-
-				element.url = "http://this.is.a.fake.url";
-
-				element.addEventListener("error", errorListener);
-				element.addEventListener("response", responseListener);
-
-				element.go();
-			});
-
-			test("fires load", function (done) {
-				var listener = function (event) {
-					assert.equal(typeof event, "object");
-					element.removeEventListener("load", listener);
-					done();
-				};
-
-				element.addEventListener("load", listener);
-
-				element.go();
-			});
-
-			test("fires response", function (done) {
-				var listener = function (event) {
-					assert.equal(event.detail[0].title, "sunt aut facere repellat provident occaecati excepturi optio reprehenderit");
-					element.removeEventListener("response", listener);
-					done();
-				};
-
-				element.addEventListener("response", listener);
-
-				element.go();
-			});
-
-			test("invokes go", function (done) {
-				var listener = function (event) {
-					assert.equal(typeof element.response, "object");
-					element.removeEventListener("complete", listener);
-					done();
-				};
-
-				element.addEventListener("complete", listener);
-
-				element.go();
-			});
-
-			test("invokes abort", function (done) {
-				var completeListener = function (event) {
-					assert.equal(typeof element.response, "object");
-					element.removeEventListener("complete", completeListener);
-					element.removeEventListener("response", responseListener);
-					done();
-				};
-
-				// This event should never be called, hence assert.equal(true, false).
-				var responseListener = function (event) {
-					assert.equal(true, false);
-					element.removeEventListener("complete", completeListener);
-					element.removeEventListener("response", responseListener);
-					done();
-				};
-
-				element.addEventListener("complete", completeListener);
-				element.addEventListener("response", responseListener);
-
-				element.go();
-				element.abort();
-			});
-		});
-	</script>
+	<byutv-jsonp id="declaration" url="http://jsonplaceholder.typicode.com/posts"></byutv-jsonp>
+	<script src="../scripts/test/byutv-jsonp-tests.js"></script>
 </body>
 </html>

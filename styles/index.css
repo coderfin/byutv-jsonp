@@ -1,0 +1,17 @@
+﻿[catalog-only].iron-component-page {
+	display: block;
+}
+
+paper-toolbar select {
+	display: none;
+}
+
+paper-toolbar #topBar > div::after {
+	content: "byutv-jsonp (1.1.0)";
+	opacity: 0;
+	transition: all linear 300ms;
+}
+
+paper-toolbar.has-shadow #topBar > div::after {
+	opacity: 1;
+}

@@ -7,298 +7,41 @@ Authors:
 
 	Ron Peterson
 -->
-
 <!--
-A Polymer element that facilitates making JSONP request.  Patterned after Polymer's `core-ajax` element and tested using unit tests.
+The `byutv-jsonp` element (`<byutv-jsonp>`) exposes network request functionality.
+It is a Polymer v1.0+ element that facilitates making JSONP requests.
+It is patterned after Polymer's `iron-ajax` element (`<iron-ajax>`).
+It has been tested using unit tests.
+It is part of the BYUtv Elements group of elements.
 
-Example:
+#### Example:
 
+```html
 	<byutv-jsonp
-		auto
-		url="http://jsonplaceholder.typicode.com/posts"
-		params='{"userId":"1"}'
-		on-response="{{handleResponse}}"></byutv-jsonp>
+				 auto
+				 url="http://jsonplaceholder.typicode.com/posts"
+				 params='{"userId":"1"}'
+				 on-response="handleResponse"
+				 debounce-duration="300"></byutv-jsonp>
+```
 
-With `auto` set to `true`, the element performs a request whenever
-its `url` or `params` attributes are changed.
+When `auto` is set to `true`, `<byutv-jsonp>` performs a request whenever its
+non-readOnly attributes are changed.  `debounce-duration` can be used to
+debounce automatically generated requests if multiple attributes are changed
+sequentially.  You can trigger a request explicitly by calling `generateRequest`
+on the `<byutv-jsonp>`.
 
-Note: The `params` attribute must be a double quoted JSON string.
+Note:
+The `params` attribute must be double quoted JSON.
+Multiple requests can be performed using the same `<byutv-jsonp>`.
 
-You can trigger a request explicitly by calling `go` on the element.
+<a href="https://github.com/coderfin/byutv-jsonp/">View readme, changelog, and more information on GitHub</a>
 
+@group BYUtv Elements
 @element byutv-jsonp
-@demo http://coderfin.github.io/byutv-jsonp/components/byutv-jsonp/demo.html
-@homepage https://github.com/coderfin/byutv-jsonp
+@demo demo/index.html
+@hero hero.svg
+@homepage http://coderfin.github.io/byutv-jsonp/components/byutv-jsonp/
 -->
-<link href="../polymer/polymer.html" rel="import" />
-<polymer-element name="byutv-jsonp" attributes="auto cache callbackname callbackparam error loading params response url">
-	<script>
-		Polymer({
-			/**
-			 * Fired whenever a response or an error is received.
-			 *
-			 * @event complete
-			 */
-
-			/**
-			 * Fired when an error is received.
-			 *
-			 * @event error
-			 */
-
-			/**
-			 * Fired when a request is loaded.
-			 *
-			 * @event load
-			 */
-
-			/**
-			 * Fired when a response is received.
-			 *
-			 * @event response
-			 */
-
-			/**
-			 * If true, automatically performs a JSONP request when either `url` or `params` changes.
-			 *
-			 * @attribute auto
-			 * @type boolean
-			 * @default false
-			 */
-			auto: false,
-
-			/**
-			 * If true, force a JSONP request to be cached by the browser.
-			 *
-			 * This will only work if callbackname is set to a static value and
-			 * the `url` and `params` attributes do not change between requests.
-			 *
-			 * It works by removing the "_={guid}" query string parameter from the request.
-			 *
-			 * @attribute cache
-			 * @type boolean
-			 * @default false
-			 */
-			cache: false,
-
-			/**
-			 * Specifies the JSONP wrapper function name and is the value of `callbackparam`.
-			 *
-			 * The server will use this value to properly wrap the JSONP request response.
-			 * Change this to a static value when browser caching is desired (see `cache`).
-			 *
-			 * @attribute callbackname
-			 * @type string
-			 * @default "byutv_jsonp_callback_{guid}"
-			 */
-			callbackname: "",
-
-			/**
-			 * Overrides the callback function name in a JSONP request.
-			 *
-			 * Setting `callbackparam` to an empty string will remove the "callback={callbackname}"
-			 * query string parameter from the request. Setting it to any valid string will force
-			 * it to be used instead of "callback", e.g., "{callbackparam}={callbackname}".
-			 *
-			 * @attribute callbackparam
-			 * @type string
-			 * @default "callback"
-			 */
-			callbackparam: undefined,
-
-			/**
-			 * The error event for the current request, or null if it hasn't
-			 * completed yet or the request resulted in success.
-			 *
-			 * @attribute error
-			 * @type object
-			 * @default null
-			 */
-			error: null,
-
-			/**
-			 * Whether the current request is currently loading.
-			 *
-			 * @attribute loading
-			 * @type boolean
-			 * @default false
-			 */
-			loading: false,
-
-			/**
-			 * The response data for the current request, or null if it hasn't
-			 * completed yet or the request resulted in error.
-			 *
-			 * @attribute response
-			 * @type object
-			 * @default null
-			 */
-			response: null,
-
-			/**
-			 * The URL target of the request.
-			 *
-			 * @attribute url
-			 * @type string
-			 * @default ""
-			 */
-			url: "",
-
-			created: function () {
-				/**
-				 * Parameters to send to the specified URL, as JSON.
-				 *
-				 * @attribute params
-				 * @type string
-				 * @default ""
-				 */
-				this.params = {};
-			},
-
-			publish: {
-				loading: {
-					value: false,
-					reflect: true
-				}
-			},
-
-			autoChanged: function () {
-				this.autoGo();
-			},
-
-			paramsChanged: function () {
-				this.autoGo();
-			},
-
-			urlChanged: function () {
-				this.autoGo();
-			},
-
-			autoGo: function () {
-				if (this.auto) {
-					this.goJob = this.job(this.goJob, this.go, 0);
-				}
-			},
-
-			/**
-			 * Performs a JSONP request to the specified URL.
-			 *
-			 * @method go
-			 */
-			go: function () {
-				this.didAbort = false;
-				this.loading = true;
-				this.error = null;
-				this.response = null;
-
-				var guid = this.newGuid(true);
-
-				this.callbackname = this.callbackname || "byutv_jsonp_callback_" + guid;
-
-				if (this.callbackparam === undefined) {
-					this.callbackparam = "callback";
-					this.addCallbackParam();
-				} else if (this.callbackparam) {
-					this.addCallbackParam();
-				}
-
-				if (!this.cache) {
-					this.params._ = guid;
-				}
-
-				this.script = document.createElement("script");
-				this.script.src = this.url + this.getParams();
-				this.script.async = true;
-				this.script.onload = this.processLoad.bind(this);
-				this.script.onerror = this.processError.bind(this);
-				window[this.callbackname] = this.processResponse.bind(this);
-
-				document.querySelector("head").appendChild(this.script);
-			},
-
-			/**
-			 * Aborts the current active request if there is one and
-			 * cleans up internal state appropriately.
-			 *
-			 * @method abort
-			 */
-			abort: function () {
-				this.didAbort = true;
-				this.processComplete();
-				this.cleanup();
-			},
-
-			processLoad: function (event) {
-				this.processEvent("load", event);
-			},
-
-			processResponse: function (data) {
-				if (this.loading) {
-					this.response = data;
-				}
-
-				this.processEvent("response", data, true);
-			},
-
-			processError: function (event) {
-				if (this.loading) {
-					this.error = event;
-				}
-
-				this.processEvent("error", event, true);
-			},
-
-			processComplete: function () {
-				this.fire("complete");
-			},
-
-			processEvent: function (eventName, arg, complete) {
-				if (!this.didAbort) {
-					this.fire(eventName, arg);
-				}
-
-				if (complete) {
-					this.cleanup();
-					this.processComplete();
-				}
-			},
-
-			cleanup: function () {
-				this.loading = false;
-				delete window[this.callbackname];
-
-				if (this.script) {
-					this.script.parentNode.removeChild(this.script);
-					this.script = null;
-				}
-			},
-
-			addCallbackParam: function () {
-				if (this.callbackparam) {
-					this.params[this.callbackparam] = this.callbackname;
-				}
-			},
-
-			getParams: function () {
-				var params = this.params;
-
-				var query = Object.keys(params).reduce(function (arr, key) {
-					return arr.push(key + "=" + encodeURIComponent(params[key])) && arr;
-				}, []);
-
-				return query.length ? "?" + query.join("&") : "";
-			},
-
-			newGuid: function (noDashes) {
-				var guid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (char) {
-					var randomNum = Math.random() * 16 | 0;
-					var value = char === "x" ? randomNum : (randomNum & 0x3 | 0x8);
-
-					return value.toString(16);
-				});
-
-				return noDashes ? guid.replace(/-/g, "") : guid;
-			}
-		});
-	</script>
-</polymer-element>
+<link rel="import" href="../polymer/polymer.html">
+<script src="scripts/byutv-jsonp.js"></script>
