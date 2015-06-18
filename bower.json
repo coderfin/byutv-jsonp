@@ -1,17 +1,25 @@
 {
 	"name": "byutv-jsonp",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"authors": [
 		"Ron Peterson"
 	],
-	"description": "The `byutv-jsonp` element (`<byutv-jsonp>`) exposes network request functionality.  It is a Polymer v1.0+ element that facilitates making JSONP requests.  It is patterned after Polymer's `iron-ajax` element (`<iron-ajax>`).  It has been tested using unit tests.  It is part of the BYUtv Elements group of elements.",
+	"description": "The `byutv-jsonp` element (`<byutv-jsonp>`) exposes network request functionality.  It is a Polymer v1.0+ element that facilitates making JSONP requests.  It uses Polymer behaviors (`Byutv.behaviors.Jsonp`).  It is patterned after Polymer's `iron-ajax` element (`<iron-ajax>`).  It has been tested using unit tests.  It is part of the BYUtv Elements group of elements.",
 	"keywords": [
 		"web-component",
 		"web-components",
-		"polymer",
 		"byutv-jsonp",
 		"byutv",
 		"jsonp",
+		"byutv-elements-jsonp",
+		"byutv-elements",
+		"byutv-behaviors-jsonp",
+		"byutv-behaviors",
+		"element",
+		"elements",
+		"behavior",
+		"behaviors",
+		"polymer",
 		"iron-ajax",
 		"iron-jsonp"
 	],
