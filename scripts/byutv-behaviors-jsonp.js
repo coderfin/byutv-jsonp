@@ -228,6 +228,14 @@ Byutv.behaviors.Jsonp = {
 		},
 
 		/**
+		 * The length of time in milliseconds to wait before timing out the request.
+		 */
+		timeoutDuration: {
+				type: Number,
+				value: 30000
+		},
+
+		/**
 		 * The URL target of the request.
 		 */
 		url: {
@@ -262,7 +270,7 @@ Byutv.behaviors.Jsonp = {
 
 	// All non-readOnly properties
 	observers: [
-		"_requestOptionsChanged(auto, cache, callbackKey, callbackValue, debounceDuration, params, sync, url, verbose)"
+		"_requestOptionsChanged(auto, cache, callbackKey, callbackValue, debounceDuration, params, sync, timeoutDuration, url, verbose)"
 	],
 
 	/**
@@ -346,11 +354,33 @@ Byutv.behaviors.Jsonp = {
 		request.script = document.createElement("script");
 		request.script.src = this._requestUrl;
 		request.script.async = this.sync ? false : true;
-		request.script.onload = this._handleLoad.bind(this, request);
-		request.script.onerror = this._handleError.bind(this, request);
-		window[this.callbackValue] = this._handleResponse.bind(this, request);
+
+		var _this = this;
+		request.script.onload = function(event) {
+			_this._handleLoad(request, event);
+		};
+
+		request.script.onerror = function(event) {
+			clearTimeout(request.timeout);
+
+			_this._handleError(request, event);
+		};
+
+		window[this.callbackValue] = function(data) {
+			clearTimeout(request.timeout);
+
+			_this._handleResponse(request, data);
+		};
 
 		document.querySelector("head").appendChild(request.script);
+
+		request.timeout = setTimeout(function() {
+			_this._handleError(request, new ErrorEvent("error", {
+				error : new Error("Timeout"),
+				message : "The JSONP request timed out.",
+				filename : "byutv-behaviors-jsonp.js"
+			}));
+		}, this.timeoutDuration);
 
 		this.fire("sent", request);
 
@@ -408,6 +438,7 @@ Byutv.behaviors.Jsonp = {
 
 			this.activeRequests.splice(requestIndex, 1);
 			delete window[this.callbackValue];
+			clearTimeout(request.timeout);
 			request.script.parentNode.removeChild(request.script);
 			request = null;
 		}
