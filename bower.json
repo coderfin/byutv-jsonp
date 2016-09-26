@@ -23,7 +23,9 @@
     "iron-ajax",
     "iron-jsonp"
   ],
-  "main": ["byutv-jsonp.html"],
+  "main": [
+    "byutv-jsonp.html"
+  ],
   "license": "MIT",
   "homepage": "http://coderfin.github.io/byutv-jsonp/components/byutv-jsonp/",
   "ignore": [

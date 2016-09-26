@@ -61,20 +61,20 @@ Byutv.behaviors.Jsonp = {
 		 * @default []
 		 */
 		activeRequests: {
-				type: Array,
-				notify: true,
-				readOnly: true,
-				value: function () {
-					this._setActiveRequests([]);
-				}
+			type: Array,
+			notify: true,
+			readOnly: true,
+			value: function () {
+				this._setActiveRequests([]);
+			}
 		},
 
 		/**
 		 * If `true`, automatically performs requests when any non-readOnly properties change.
 		 */
 		auto: {
-				type: Boolean,
-				value: false
+			type: Boolean,
+			value: false
 		},
 
 		/**
@@ -86,8 +86,8 @@ Byutv.behaviors.Jsonp = {
 		 * - This works by removing the `_={guid}` query string parameter from the request.
 		 */
 		cache: {
-				type: Boolean,
-				value: false
+			type: Boolean,
+			value: false
 		},
 
 		/**
@@ -100,8 +100,8 @@ Byutv.behaviors.Jsonp = {
 		 * it to be used instead of "callback", e.g., "{callback-key}={callback-value}".
 		 */
 		callbackKey: {
-				type: String,
-				value: "callback"
+			type: String,
+			value: "callback"
 		},
 
 		/**
@@ -114,29 +114,29 @@ Byutv.behaviors.Jsonp = {
 		 * @default byutv_jsonp_callback_{guid}
 		 */
 		callbackValue: {
-				type: String,
-				value: function () {
-					return "byutv_jsonp_callback_" + this._newGuid(true);
-				}
+			type: String,
+			value: function () {
+				return "byutv_jsonp_callback_" + this._newGuid(true);
+			}
 		},
 
 		/**
 		 * The length of time in milliseconds to debounce multiple requests.
 		 */
 		debounceDuration: {
-				type: Number,
-				value: 0
+			type: Number,
+			value: 0
 		},
 
 		/**
 		 * Will be set to `true` if an attempt was made to abort the most recent request.
 		 */
 		lastAborted: {
-				type: Boolean,
-				notify: true,
-				readOnly: true,
-				reflectToAttribute: true,
-				value: false
+			type: Boolean,
+			notify: true,
+			readOnly: true,
+			reflectToAttribute: true,
+			value: false
 		},
 
 		/**
@@ -148,9 +148,9 @@ Byutv.behaviors.Jsonp = {
 		 * @default undefined
 		 */
 		lastError: {
-				type: Object,
-				notify: true,
-				readOnly: true
+			type: Object,
+			notify: true,
+			readOnly: true
 		},
 
 		/**
@@ -162,9 +162,9 @@ Byutv.behaviors.Jsonp = {
 		 * @default undefined
 		 */
 		lastLoad: {
-				type: Object,
-				notify: true,
-				readOnly: true
+			type: Object,
+			notify: true,
+			readOnly: true
 		},
 
 		/**
@@ -175,9 +175,9 @@ Byutv.behaviors.Jsonp = {
 		 * @default undefined
 		 */
 		lastRequest: {
-				type: Object,
-				notify: true,
-				readOnly: true
+			type: Object,
+			notify: true,
+			readOnly: true
 		},
 
 		/**
@@ -189,9 +189,9 @@ Byutv.behaviors.Jsonp = {
 		 * @default undefined
 		 */
 		lastResponse: {
-				type: Object,
-				notify: true,
-				readOnly: true
+			type: Object,
+			notify: true,
+			readOnly: true
 		},
 
 		/**
@@ -199,11 +199,11 @@ Byutv.behaviors.Jsonp = {
 		 * associated with this `<byutv-jsonp>`.
 		 */
 		loading: {
-				type: Boolean,
-				notify: true,
-				readOnly: true,
-				reflectToAttribute: true,
-				value: false
+			type: Boolean,
+			notify: true,
+			readOnly: true,
+			reflectToAttribute: true,
+			value: false
 		},
 
 		/**
@@ -213,42 +213,42 @@ Byutv.behaviors.Jsonp = {
 		 * @type {JSON}
 		 */
 		params: {
-				type: Object,
-				value: function () {
-					return {};
-				}
+			type: Object,
+			value: function () {
+				return {};
+			}
 		},
 
 		/**
 		 * Toggle whether requests are synchronous or asynchronous.
 		 */
 		sync: {
-				type: Boolean,
-				value: false
+			type: Boolean,
+			value: false
 		},
 
 		/**
 		 * The length of time in milliseconds to wait before timing out the request.
 		 */
 		timeoutDuration: {
-				type: Number,
-				value: 30000
+			type: Number,
+			value: 30000
 		},
 
 		/**
 		 * The URL target of the request.
 		 */
 		url: {
-				type: String,
-				value: ""
+			type: String,
+			value: ""
 		},
 
 		/**
 		 * If `true`, error messages will automatically be logged to the console.
 		 */
 		verbose: {
-				type: Boolean,
-				value: false
+			type: Boolean,
+			value: false
 		}
 	},
 
@@ -356,17 +356,17 @@ Byutv.behaviors.Jsonp = {
 		request.script.async = this.sync ? false : true;
 
 		var _this = this;
-		request.script.onload = function(event) {
+		request.script.onload = function (event) {
 			_this._handleLoad(request, event);
 		};
 
-		request.script.onerror = function(event) {
+		request.script.onerror = function (event) {
 			clearTimeout(request.timeout);
 
 			_this._handleError(request, event);
 		};
 
-		window[this.callbackValue] = function(data) {
+		window[this.callbackValue] = function (data) {
 			clearTimeout(request.timeout);
 
 			_this._handleResponse(request, data);
@@ -374,11 +374,11 @@ Byutv.behaviors.Jsonp = {
 
 		document.querySelector("head").appendChild(request.script);
 
-		request.timeout = setTimeout(function() {
+		request.timeout = setTimeout(function () {
 			_this._handleError(request, new ErrorEvent("error", {
-				error : new Error("Timeout"),
-				message : "The JSONP request timed out.",
-				filename : "byutv-behaviors-jsonp.js"
+				error: new Error("Timeout"),
+				message: "The JSONP request timed out.",
+				filename: "byutv-behaviors-jsonp.js"
 			}));
 		}, this.timeoutDuration);
 
@@ -422,7 +422,7 @@ Byutv.behaviors.Jsonp = {
 	 * 
 	 * @param {Request} request The request to cleanup.
 	 */
-	_cleanupRequest: function(request) {
+	_cleanupRequest: function (request) {
 		var requestIndex = this.activeRequests.indexOf(request);
 
 		if (requestIndex >= 0) {
