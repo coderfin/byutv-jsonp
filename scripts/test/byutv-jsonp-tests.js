@@ -305,6 +305,7 @@
 		jsonp.setAttribute("url", url);
 		jsonp.setAttribute("auto", "");
 		jsonp.setAttribute("params", " ");
+		jsonp.setAttribute("timeout-duration", 1000);
 		jsonp.addEventListener("error", function () {
 			assert.deepPropertyVal(jsonp, "lastError.type", "error");
 
@@ -384,6 +385,7 @@
 		jsonp.setAttribute("url", url);
 		jsonp.setAttribute("auto", "");
 		jsonp.setAttribute("params", " ");
+		jsonp.setAttribute("timeout-duration", 1000);
 		jsonp.addEventListener("complete", function () {
 			assert.isUndefined(jsonp.lastResponse);
 
@@ -488,6 +490,30 @@
 		});
 	});
 
+	test("The `timeoutDuration` property can be set.", function () {
+		var jsonp = new Byutv.Jsonp();
+		jsonp.setAttribute("timeout-duration", "5000");
+
+		assert.isNumber(jsonp.timeoutDuration);
+		assert.propertyVal(jsonp, "timeoutDuration", 5000);
+		assert.isTrue(jsonp.hasAttribute("timeout-duration"));
+	});
+
+	// Note: This test currently needs to run in Safari to work properly.
+	test("The `timeoutDuration` returns an error if the request takes too long.", function (done) {
+		this.timeout(20000);
+
+		var jsonp = new Byutv.Jsonp();
+		jsonp.setAttribute("url", url);
+		jsonp.setAttribute("auto", "");
+		jsonp.setAttribute("params", " ");
+		jsonp.setAttribute("timeout-duration", "15000")
+		jsonp.addEventListener("error", function (event) {
+			assert.deepPropertyVal(event, "detail.type", "error");
+			done();
+		});
+	});
+
 	test("The `url` property can be set.", function () {
 		var jsonp = new Byutv.Jsonp();
 		jsonp.setAttribute("url", url);
@@ -564,6 +590,7 @@
 		jsonp.setAttribute("url", url);
 		jsonp.setAttribute("auto", "");
 		jsonp.setAttribute("params", " ");
+		jsonp.setAttribute("timeout-duration", 1000);
 		jsonp.addEventListener("error", function (event) {
 			assert.deepPropertyVal(event, "detail.type", "error");
 			done();

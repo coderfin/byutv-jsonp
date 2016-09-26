@@ -64,9 +64,14 @@ This code is licensed under the MIT style license found as part of this project.
 The BYUtv Logo is trademark and copyright (c) [BYU Broadcasting](http://www.byub.org/).
 
 ## Changelog
+v1.3.0
+- Added the `timeoutDuration` property
+	- Resolves [issue #5](/coderfin/byutv-jsonp/issues/5)
+	- The default timeout for all requests is 30s
+
 v1.2.0
 - Created the `Byutv`, `Byutv.elements`, and `Byutv.behaviors` namespaces
-  - All Byutv Elements group of elements' factory/constructor methods and behaviors can be found under these namespaces.
+  - All Byutv Elements group of elements' factory/constructor methods and behaviors can be found under these namespaces
 - Removed the factory/constructor `ByutvJsonp` in favor of the namespaced versions (`Byutv.Jsonp` or `Byutv.elements.Jsonp`)
 - Created a Polymer *behavior* (`Byutv.behaviors.Jsonp`)
 
