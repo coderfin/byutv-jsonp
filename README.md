@@ -66,7 +66,7 @@ The BYUtv Logo is trademark and copyright (c) [BYU Broadcasting](http://www.byub
 ## Changelog
 v1.3.0
 - Added the `timeoutDuration` property
-	- Resolves [issue #5](/coderfin/byutv-jsonp/issues/5)
+	- Resolves [issue #5](https://github.com/coderfin/byutv-jsonp/issues/5)
 	- The default timeout for all requests is 30s
 
 v1.2.0
