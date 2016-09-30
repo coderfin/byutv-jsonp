@@ -1,0 +1,44 @@
+{
+  "name": "byutv-jsonp",
+  "version": "1.3.0",
+  "authors": [
+    "Ron Peterson"
+  ],
+  "description": "The <byutv-jsonp> Polymer v1.0+ element exposes JSONP network request functionality.",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "byutv-jsonp",
+    "byutv",
+    "jsonp",
+    "byutv-elements-jsonp",
+    "byutv-elements",
+    "byutv-behaviors-jsonp",
+    "byutv-behaviors",
+    "element",
+    "elements",
+    "behavior",
+    "behaviors",
+    "polymer",
+    "iron-ajax",
+    "iron-jsonp"
+  ],
+  "main": [
+    "byutv-jsonp.html"
+  ],
+  "license": "MIT",
+  "homepage": "http://coderfin.github.io/byutv-jsonp/components/byutv-jsonp/",
+  "ignore": [
+    "/.*",
+    "/test/",
+    "/demo/",
+    "/preview/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "*"
+  }
+}

@@ -1,0 +1,82 @@
+﻿<!doctype html>
+<!--
+@license
+Copyright (c) 2015 BYU Broadcasting. All rights reserved.
+This code is licensed under the MIT style license found as part of this project.
+
+Authors:
+
+	Ron Peterson
+-->
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+	<title>byutv-jsonp Demo</title>
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<link rel="import" href="../../marked-element/marked-element.html" />
+	<link rel="import" href="../../prism-element/prism-highlighter.html" />
+	<link rel="import" href="../byutv-jsonp.html" />
+	<link href="../styles/demo/index.css" rel="stylesheet" />
+</head>
+<body unresolved>
+	<prism-highlighter></prism-highlighter>
+	<header>
+		<h1>byutv-jsonp <span>(1.2.0)</span></h1>
+	</header>
+	<main>
+		<section>
+			<h1>Example</h1>
+			<p>This example uses the following declaration.  The results are shown below.</p>
+			<marked-element>
+				<script type="text/markdown">
+```html
+	<byutv-jsonp
+				 auto
+				 url="http://jsonplaceholder.typicode.com/posts"
+				 params='{"userId":"1"}'
+				 last-response="{{lastResponse}}"
+				 last-error="{{lastError}}"
+				 debounce-duration="300"></byutv-jsonp>
+
+```
+				</script>
+			</marked-element>
+		</section>
+		<section>
+			<template is="dom-bind">
+				<h1>
+					Result for
+					<select>
+						<option value='{"userId":"1"}'>userId 1</option>
+						<option value='{"userId":"2"}'>userId 2</option>
+						<option value='{"userId":"3"}'>userId 3</option>
+						<option value=' '>an error</option>
+					</select>
+				</h1>
+				<byutv-jsonp auto
+							 url="http://jsonplaceholder.typicode.com/posts"
+							 params='{"userId":"1"}'
+							 last-response="{{lastResponse}}"
+							 last-error="{{lastError}}"
+							 debounce-duration="300"></byutv-jsonp>
+				<template is="dom-repeat" items="{{lastResponse}}">
+					<div>
+						<h2>Record: <span>{{item.id}}</span></h2>
+						<h1>{{item.title}}</h1>
+						<p>{{item.body}}</p>
+					</div>
+				</template>
+				<template is="dom-if" if="{{lastError}}">
+					<div>
+						<h1>There was an error retrieving the data.</h1>
+					</div>
+				</template>
+			</template>
+		</section>
+	</main>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/set-iframe-height/1.1.5/set-iframe-height-child-min.js"></script>
+	<script src="../scripts/demo/index.js"></script>
+</body>
+</html>
