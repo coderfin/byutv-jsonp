@@ -64,7 +64,7 @@ Byutv.behaviors.Jsonp = {
 			type: Array,
 			notify: true,
 			readOnly: true,
-			value: []
+			value: function() { return []; }
 		},
 
 		/**
