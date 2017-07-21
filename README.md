@@ -64,6 +64,8 @@ This code is licensed under the MIT style license found as part of this project.
 The BYUtv Logo is trademark and copyright (c) [BYU Broadcasting](http://www.byub.org/).
 
 ## Changelog
+v1.3.1
+- Changed default value of `activeRequests` property
 v1.3.0
 - Added the `timeoutDuration` property
 	- Resolves [issue #5](https://github.com/coderfin/byutv-jsonp/issues/5)

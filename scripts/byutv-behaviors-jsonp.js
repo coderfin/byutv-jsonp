@@ -64,9 +64,7 @@ Byutv.behaviors.Jsonp = {
 			type: Array,
 			notify: true,
 			readOnly: true,
-			value: function () {
-				this._setActiveRequests([]);
-			}
+			value: function() { return []; }
 		},
 
 		/**
